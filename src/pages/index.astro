@@ -1,0 +1,568 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { SITE, CATEGORIES, PILLAR_POSTS } from '~/config';
+import { getCollection } from 'astro:content';
+
+const allPosts = (await getCollection('posts', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime()
+);
+const recentPosts = allPosts.slice(0, 6);
+
+function postCount(slug: string): number {
+  return allPosts.filter((p) => p.data.category === slug).length;
+}
+---
+
+<BaseLayout>
+  <!-- ============================================================
+       HERO — Onyx black + Gold accent
+       ============================================================ -->
+  <section class="hero">
+    <div class="hero-inner">
+      <p class="hero-eyebrow">CONSUL DECK LAB</p>
+      <h1 class="hero-title">
+        コンサル現場で<br />
+        10 年使える、<br />
+        <span class="hero-gold">資料作成のすべて。</span>
+      </h1>
+      <p class="hero-subtitle">{SITE.taglineEn}</p>
+      <p class="hero-description">
+        現役コンサルが PowerPoint・Excel・Word の <strong>"設計思想"</strong> を出し惜しみなく公開。<br />
+        提案書・ステコミ・ピッチデッキの構成術から、Excel 事業計画モデル、AI 活用まで網羅。
+      </p>
+      <div class="hero-cta">
+        <a href="#pillars" class="cta-primary">柱記事 5 本を読む</a>
+        <a href="/about/" class="cta-secondary">サイトについて →</a>
+      </div>
+    </div>
+    <div class="hero-deco" aria-hidden="true">
+      <svg viewBox="0 0 600 400" preserveAspectRatio="xMaxYMid slice">
+        <rect x="100" y="60" width="320" height="200" fill="none" stroke="#C9A55C" stroke-width="1" stroke-dasharray="4 6" transform="rotate(-3 260 160)" opacity="0.3" />
+        <rect x="180" y="120" width="320" height="200" fill="none" stroke="#C9A55C" stroke-width="1" stroke-dasharray="4 6" transform="rotate(3 340 220)" opacity="0.4" />
+        <rect x="260" y="180" width="320" height="200" fill="none" stroke="#C9A55C" stroke-width="1.5" transform="rotate(-1 420 280)" opacity="0.5" />
+      </svg>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PILLARS — 5 つの柱記事
+       ============================================================ -->
+  <section id="pillars" class="pillars">
+    <div class="section-inner">
+      <header class="section-header">
+        <p class="eyebrow">Pillars</p>
+        <h2 class="section-title">5 本の柱記事から始めよう</h2>
+        <p class="section-lead">
+          このサイトの核となる、最も読まれている 5 本。
+          まずはここから「コンサル品質の資料作成」の全体像を掴んでください。
+        </p>
+      </header>
+
+      <div class="pillar-grid">
+        {PILLAR_POSTS.map((pillar) => (
+          <a href={`/posts/${pillar.slug}/`} class="pillar-card">
+            <div class="pillar-number">
+              <span class="chapter-number">{pillar.number}</span>
+            </div>
+            <h3 class="pillar-title">{pillar.title}</h3>
+            <p class="pillar-description">{pillar.description}</p>
+            <p class="pillar-arrow">読む →</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CATEGORIES — 11 カテゴリ
+       ============================================================ -->
+  <section class="categories">
+    <div class="section-inner">
+      <header class="section-header">
+        <p class="eyebrow">Categories</p>
+        <h2 class="section-title">11 のカテゴリから選ぶ</h2>
+      </header>
+
+      <div class="category-grid">
+        {CATEGORIES.map((cat) => (
+          <a href={`/category/${cat.slug}/`} class="category-card">
+            <p class="category-number">{cat.number}</p>
+            <h3 class="category-name">{cat.label}</h3>
+            <p class="category-desc">{cat.description}</p>
+            <p class="category-meta">
+              {postCount(cat.slug)} 本公開 / 想定 {cat.expectedCount} 本
+            </p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       RECENT POSTS — 最新記事
+       ============================================================ -->
+  {recentPosts.length > 0 && (
+    <section class="recent">
+      <div class="section-inner">
+        <header class="section-header">
+          <p class="eyebrow">Latest</p>
+          <h2 class="section-title">最新の記事</h2>
+        </header>
+
+        <div class="recent-grid">
+          {recentPosts.map((post) => (
+            <a href={`/posts/${post.id}/`} class="recent-card">
+              <p class="recent-category">
+                {CATEGORIES.find((c) => c.slug === post.data.category)?.shortLabel}
+              </p>
+              <h3 class="recent-title">{post.data.title}</h3>
+              <p class="recent-date">
+                {post.data.publishedAt.toLocaleDateString('ja-JP', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+              </p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- ============================================================
+       AUTHOR — サイト運営者
+       ============================================================ -->
+  <section class="author-section">
+    <div class="section-inner narrow">
+      <header class="section-header">
+        <p class="eyebrow">About the Author</p>
+        <h2 class="section-title">運営者について</h2>
+      </header>
+      <p class="author-text">
+        <strong>{SITE.author}</strong>{' '}— {SITE.authorBio}
+      </p>
+      <p class="author-disclaimer">
+        ※ 本サイトは現役コンサルが運営しますが、所属企業名・案件・顧客の言及は一切行いません。
+        コンサル業務で得た非公開情報の流用も一切ありません。すべての記事は公開済みの一次情報（Microsoft 公式ドキュメント・コンサル書籍・既存解説サイト等）を元に執筆しています。
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ===== HERO ===== */
+  .hero {
+    background-color: var(--color-onyx);
+    color: var(--color-offwhite);
+    padding: 6rem 1.25rem 7rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-inner {
+    max-width: var(--container-grid);
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.22em;
+    color: var(--color-gold);
+    margin: 0 0 1.4em 0;
+  }
+
+  .hero-title {
+    font-family: var(--font-serif);
+    font-size: clamp(2.25rem, 5vw + 1rem, 4rem);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    margin: 0 0 0.8em 0 !important;
+    color: var(--color-offwhite);
+    border: none !important;
+    padding: 0 !important;
+  }
+
+  .hero-title::before {
+    display: none !important;
+  }
+
+  .hero-gold {
+    color: var(--color-gold);
+  }
+
+  .hero-subtitle {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(1rem, 1.2vw + 0.5rem, 1.25rem);
+    color: rgba(250, 250, 247, 0.6);
+    margin: 0 0 1.6em 0;
+  }
+
+  .hero-description {
+    font-size: 1.05rem;
+    line-height: 1.85;
+    max-width: 36em;
+    color: rgba(250, 250, 247, 0.88);
+    margin: 0 0 2em 0;
+  }
+
+  .hero-description strong {
+    color: var(--color-gold);
+  }
+
+  .hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 1.6rem;
+    align-items: center;
+  }
+
+  .cta-primary {
+    display: inline-flex;
+    align-items: center;
+    background-color: var(--color-gold);
+    color: var(--color-onyx);
+    padding: 0.95em 2em;
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    border: 1px solid var(--color-gold);
+    transition: background-color 0.15s ease, transform 0.15s ease;
+  }
+
+  .cta-primary:hover {
+    background-color: var(--color-gold-light);
+    color: var(--color-onyx);
+    text-decoration: none;
+  }
+
+  .cta-secondary {
+    color: var(--color-offwhite);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-bottom: 1px solid var(--color-gold);
+    padding-bottom: 0.2em;
+    transition: color 0.15s ease;
+  }
+
+  .cta-secondary:hover {
+    color: var(--color-gold);
+    text-decoration: none;
+  }
+
+  .hero-deco {
+    position: absolute;
+    top: 0;
+    right: -10%;
+    width: 60%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+    display: none;
+  }
+
+  .hero-deco svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  @media (min-width: 768px) {
+    .hero-deco {
+      display: block;
+    }
+  }
+
+  /* ===== SHARED SECTION ===== */
+  .section-inner {
+    max-width: var(--container-grid);
+    margin: 0 auto;
+    padding: 5rem 1.25rem;
+  }
+
+  .section-inner.narrow {
+    max-width: var(--container-content);
+  }
+
+  .section-header {
+    margin-bottom: 3rem;
+  }
+
+  .section-title {
+    font-family: var(--font-serif);
+    font-size: clamp(1.6rem, 1.4rem + 1vw, 2.25rem);
+    font-weight: 700;
+    margin: 0 0 0.4em 0 !important;
+    border: none !important;
+    padding: 0 !important;
+    color: var(--color-onyx);
+  }
+
+  .section-title::before {
+    display: none !important;
+  }
+
+  .section-lead {
+    font-size: 1rem;
+    line-height: 1.85;
+    color: var(--color-text);
+    max-width: 36em;
+    margin: 0;
+  }
+
+  /* ===== PILLARS ===== */
+  .pillars {
+    background-color: var(--color-offwhite);
+  }
+
+  .pillar-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.4rem;
+  }
+
+  @media (min-width: 768px) {
+    .pillar-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .pillar-grid {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+
+  .pillar-card {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1.4rem 1.6rem;
+    border: 1px solid var(--color-mist);
+    background-color: var(--color-bone);
+    color: inherit;
+    text-decoration: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pillar-card:hover {
+    border-color: var(--color-gold);
+    text-decoration: none;
+    box-shadow: var(--shadow-card);
+  }
+
+  .pillar-number {
+    margin-bottom: 1.2em;
+  }
+
+  .pillar-number .chapter-number {
+    font-size: 3rem;
+  }
+
+  .pillar-title {
+    font-family: var(--font-serif);
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.45;
+    margin: 0 0 0.8em 0 !important;
+    border: none !important;
+    padding: 0 !important;
+    color: var(--color-onyx);
+  }
+
+  .pillar-title::before {
+    display: none !important;
+  }
+
+  .pillar-description {
+    font-size: 0.875rem;
+    line-height: 1.7;
+    color: var(--color-text-muted);
+    flex: 1;
+    margin: 0;
+  }
+
+  .pillar-arrow {
+    margin: 1.2em 0 0 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-gold);
+    font-family: var(--font-display);
+    letter-spacing: 0.05em;
+  }
+
+  /* ===== CATEGORIES ===== */
+  .categories {
+    background-color: var(--color-bone);
+  }
+
+  .category-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .category-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .category-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .category-card {
+    padding: 1.4rem 1.4rem 1.2rem;
+    background-color: var(--color-offwhite);
+    border: 1px solid var(--color-mist);
+    color: inherit;
+    text-decoration: none;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .category-card:hover {
+    border-color: var(--color-gold);
+    text-decoration: none;
+  }
+
+  .category-number {
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    color: var(--color-gold);
+    margin: 0 0 0.4em 0;
+  }
+
+  .category-name {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0 0 0.6em 0 !important;
+    border: none !important;
+    padding: 0 !important;
+    color: var(--color-onyx);
+  }
+
+  .category-name::before {
+    display: none !important;
+  }
+
+  .category-desc {
+    font-size: 0.85rem;
+    line-height: 1.65;
+    color: var(--color-text-muted);
+    margin: 0 0 0.8em 0;
+    flex: 1;
+  }
+
+  .category-meta {
+    font-size: 0.75rem;
+    color: var(--color-slate);
+    font-family: var(--font-mono);
+    margin: 0;
+  }
+
+  /* ===== RECENT ===== */
+  .recent {
+    background-color: var(--color-offwhite);
+  }
+
+  .recent-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .recent-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .recent-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .recent-card {
+    padding: 1.4rem;
+    border: 1px solid var(--color-mist);
+    background-color: var(--color-bone);
+    color: inherit;
+    text-decoration: none;
+    transition: border-color 0.2s ease;
+  }
+
+  .recent-card:hover {
+    border-color: var(--color-gold);
+    text-decoration: none;
+  }
+
+  .recent-category {
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    color: var(--color-gold);
+    text-transform: uppercase;
+    font-weight: 600;
+    margin: 0 0 0.6em 0;
+  }
+
+  .recent-title {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+    margin: 0 0 0.8em 0 !important;
+    border: none !important;
+    padding: 0 !important;
+    color: var(--color-onyx);
+  }
+
+  .recent-title::before {
+    display: none !important;
+  }
+
+  .recent-date {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    margin: 0;
+  }
+
+  /* ===== AUTHOR ===== */
+  .author-section {
+    background-color: var(--color-bone);
+  }
+
+  .author-text {
+    font-size: 1rem;
+    line-height: 1.85;
+    color: var(--color-text);
+  }
+
+  .author-disclaimer {
+    margin-top: 1.4em;
+    font-size: 0.85rem;
+    line-height: 1.75;
+    color: var(--color-text-muted);
+    padding: 1em 1.2em;
+    background-color: var(--color-offwhite);
+    border-left: 2px solid var(--color-slate);
+  }
+</style>

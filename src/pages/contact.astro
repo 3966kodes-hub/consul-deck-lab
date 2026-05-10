@@ -1,0 +1,84 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="お問い合わせ" description="サイト運営者への連絡方法">
+  <article class="page">
+    <header class="page-header">
+      <p class="eyebrow">Contact</p>
+      <h1>お問い合わせ</h1>
+    </header>
+
+    <div class="page-body">
+      <p>
+        本サイトに関するお問い合わせ・記事内容の誤情報指摘・取材依頼などは、
+        以下のメールアドレスまでご連絡ください。
+      </p>
+
+      <p class="contact-email">
+        ✉ <a href="mailto:contact@consul-deck-lab.com">contact@consul-deck-lab.com</a>
+      </p>
+
+      <h2>受付対象</h2>
+      <ul>
+        <li>記事内容の誤情報・誤記の指摘</li>
+        <li>記事のリクエスト・テーマ提案</li>
+        <li>取材・寄稿・インタビュー依頼</li>
+        <li>本サイトへの掲載・引用に関する許可申請</li>
+        <li>その他、ビジネス用途のご相談</li>
+      </ul>
+
+      <h2>受付対象外</h2>
+      <ul>
+        <li>個別の業務コンサルティング・資料添削（運営者の本業の関係上、対応できません）</li>
+        <li>運営者所属企業名の特定・確認に関する質問</li>
+        <li>営業目的のご連絡（広告掲載・SEO 業者・PR 代行 等）</li>
+      </ul>
+
+      <p class="updated">返信は数営業日以内を目安としております。</p>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .page {
+    max-width: var(--container-content);
+    margin: 0 auto;
+    padding: 4rem 1.25rem 6rem;
+  }
+
+  .page-header {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--color-mist);
+  }
+
+  .page-header h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 1.5rem + 1.5vw, 2.75rem);
+    margin: 0 !important;
+    border: none !important;
+    padding: 0 !important;
+  }
+
+  .page-header h1::before {
+    display: none !important;
+  }
+
+  .contact-email {
+    text-align: center;
+    font-size: 1.1rem;
+    padding: 1.4em 1em;
+    background-color: var(--color-bone);
+    border-left: 3px solid var(--color-gold);
+    border-right: 3px solid var(--color-gold);
+    margin: 2em 0;
+  }
+
+  .updated {
+    margin-top: 3em;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    font-style: italic;
+  }
+</style>

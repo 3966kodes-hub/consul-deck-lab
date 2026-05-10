@@ -1,0 +1,380 @@
+@import "tailwindcss";
+
+/* ============================================================
+   コンサルデッキ ラボ — Executive Stoic Design System
+   ============================================================ */
+
+@theme {
+  /* === Brand Colors === */
+  --color-onyx: #0F1419;
+  --color-ink: #1A1A1A;
+  --color-offwhite: #FAFAF7;
+  --color-bone: #F5F5F0;
+  --color-mist: #E5E5E0;
+  --color-slate: #6B6B6B;
+
+  /* === Accents === */
+  --color-gold: #C9A55C;
+  --color-gold-deep: #B08F47;
+  --color-gold-light: #E0C589;
+  --color-navy: #1E3A5F;
+  --color-navy-deep: #142A47;
+
+  /* === Status === */
+  --color-sage: #5C8C7E;
+  --color-amber: #B8860B;
+  --color-brick: #8B3A3A;
+
+  /* === Semantic Aliases === */
+  --color-bg: var(--color-offwhite);
+  --color-surface: var(--color-bone);
+  --color-text: var(--color-ink);
+  --color-text-muted: var(--color-slate);
+  --color-border: var(--color-mist);
+  --color-primary: var(--color-onyx);
+  --color-accent: var(--color-gold);
+
+  /* === Typography === */
+  --font-display: "Playfair Display", "Noto Serif JP", Georgia, serif;
+  --font-serif: "Noto Serif JP", Georgia, "Yu Mincho", serif;
+  --font-sans: "Noto Sans JP", "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* === Container === */
+  --container-content: 720px;
+  --container-wide: 880px;
+  --container-grid: 1200px;
+  --container-hero: 1440px;
+
+  /* === Shadows === */
+  --shadow-soft: 0 1px 3px rgba(15, 20, 25, 0.04);
+  --shadow-card: 0 4px 12px rgba(15, 20, 25, 0.06);
+  --shadow-modal: 0 16px 48px rgba(15, 20, 25, 0.12);
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    font-family: var(--font-sans);
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    line-height: 1.85;
+    font-feature-settings: "palt" 1;
+  }
+
+  /* === Headings (Serif for Executive feel) === */
+
+  h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(1.875rem, 1.5rem + 1.5vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    margin-block: 1em 0.7em;
+    color: var(--color-onyx);
+  }
+
+  h2 {
+    font-family: var(--font-serif);
+    font-size: clamp(1.5rem, 1.25rem + 1vw, 1.875rem);
+    font-weight: 700;
+    line-height: 1.45;
+    letter-spacing: -0.005em;
+    margin-block: 2.5em 0.8em;
+    padding-bottom: 0.5em;
+    border-bottom: 1px solid var(--color-mist);
+    scroll-margin-top: 5rem;
+    color: var(--color-onyx);
+  }
+
+  h2::before {
+    content: "";
+    display: inline-block;
+    width: 0.4em;
+    height: 0.05em;
+    background-color: var(--color-gold);
+    vertical-align: middle;
+    margin-right: 0.6em;
+    transform: translateY(-0.2em);
+  }
+
+  h3 {
+    font-family: var(--font-serif);
+    font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
+    font-weight: 600;
+    line-height: 1.5;
+    margin-block: 2em 0.6em;
+    scroll-margin-top: 5rem;
+    color: var(--color-onyx);
+  }
+
+  h4 {
+    font-family: var(--font-serif);
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.55;
+    margin-block: 1.6em 0.5em;
+  }
+
+  /* === Paragraph & Inline === */
+
+  p {
+    margin-block: 1.2em;
+    line-height: 1.85;
+  }
+
+  a {
+    color: var(--color-navy);
+    text-decoration: underline;
+    text-decoration-color: var(--color-gold);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+    transition: color 0.15s ease, text-decoration-color 0.15s ease;
+  }
+
+  a:hover {
+    color: var(--color-gold-deep);
+    text-decoration-color: var(--color-gold-deep);
+    text-decoration-thickness: 2px;
+  }
+
+  strong {
+    font-weight: 700;
+    color: var(--color-onyx);
+  }
+
+  em {
+    font-style: italic;
+    color: var(--color-navy);
+  }
+
+  /* === Lists === */
+
+  ul, ol {
+    margin-block: 1.2em;
+    padding-inline-start: 1.6em;
+  }
+
+  li {
+    margin-block: 0.4em;
+    line-height: 1.85;
+  }
+
+  ul li::marker {
+    color: var(--color-gold);
+  }
+
+  ol li::marker {
+    color: var(--color-gold);
+    font-family: var(--font-display);
+    font-weight: 600;
+  }
+
+  /* === Code === */
+
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background-color: var(--color-bone);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    color: var(--color-navy);
+    border: 1px solid var(--color-mist);
+  }
+
+  pre {
+    background-color: var(--color-onyx);
+    color: var(--color-offwhite);
+    padding: 1.2em 1.4em;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-block: 1.6em;
+    border: 1px solid var(--color-mist);
+    box-shadow: var(--shadow-card);
+  }
+
+  pre code {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: 0.875rem;
+  }
+
+  /* === Blockquote === */
+
+  blockquote {
+    margin: 1.8em 0;
+    padding: 0.6em 1.4em;
+    border-left: 3px solid var(--color-gold);
+    background-color: var(--color-bone);
+    font-style: italic;
+    color: var(--color-text);
+  }
+
+  blockquote p {
+    margin-block: 0.6em;
+  }
+
+  /* === Tables === */
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-block: 1.8em;
+    font-size: 0.95em;
+    background-color: var(--color-offwhite);
+    box-shadow: var(--shadow-soft);
+  }
+
+  th {
+    background-color: var(--color-onyx);
+    color: var(--color-offwhite);
+    font-family: var(--font-serif);
+    font-weight: 600;
+    text-align: left;
+    padding: 0.8em 1em;
+    border: none;
+  }
+
+  td {
+    padding: 0.8em 1em;
+    border-bottom: 1px solid var(--color-mist);
+    vertical-align: top;
+  }
+
+  tr:nth-child(even) td {
+    background-color: var(--color-bone);
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  /* === Horizontal Rule === */
+
+  hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      var(--color-mist) 20%,
+      var(--color-gold) 50%,
+      var(--color-mist) 80%,
+      transparent 100%
+    );
+    margin-block: 3em;
+  }
+
+  /* === Selection === */
+
+  ::selection {
+    background-color: var(--color-gold);
+    color: var(--color-onyx);
+  }
+
+  /* === Focus === */
+
+  *:focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* === Image === */
+
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+  }
+}
+
+@layer components {
+  /* === Decorative Divider with Gold Accent === */
+  .deck-divider {
+    display: flex;
+    align-items: center;
+    margin-block: 2em;
+  }
+
+  .deck-divider::before,
+  .deck-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background-color: var(--color-mist);
+  }
+
+  .deck-divider span {
+    padding: 0 1.5em;
+    color: var(--color-gold);
+    font-family: var(--font-display);
+    letter-spacing: 0.1em;
+    font-size: 0.85em;
+    text-transform: uppercase;
+  }
+
+  /* === Chapter Number (large display) === */
+  .chapter-number {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--color-gold);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  /* === Section Eyebrow Label === */
+  .eyebrow {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+    margin-bottom: 0.8em;
+  }
+
+  /* === Pillar Card === */
+  .pillar-card {
+    border: 1px solid var(--color-mist);
+    background-color: var(--color-offwhite);
+    padding: 2em 1.6em;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pillar-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0.25em;
+    height: 100%;
+    background-color: var(--color-gold);
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.3s ease;
+  }
+
+  .pillar-card:hover {
+    border-color: var(--color-gold);
+    box-shadow: var(--shadow-card);
+  }
+
+  .pillar-card:hover::before {
+    transform: scaleY(1);
+  }
+}

@@ -1,0 +1,70 @@
+---
+import { SITE } from '~/config';
+---
+
+<aside class="author-bio">
+  <div class="author-avatar" aria-hidden="true">
+    <svg viewBox="0 0 64 64" width="56" height="56">
+      <circle cx="32" cy="32" r="32" fill="#0F1419" />
+      <circle cx="32" cy="26" r="10" fill="#C9A55C" />
+      <path d="M14 56 Q14 40 32 40 Q50 40 50 56 Z" fill="#C9A55C" />
+    </svg>
+  </div>
+  <div class="author-content">
+    <p class="author-eyebrow">著者</p>
+    <p class="author-name">{SITE.author}</p>
+    <p class="author-bio-text">{SITE.authorBio}</p>
+    <p class="author-links">
+      <a href="https://www.amazon.co.jp/dp/B0DNQ4RQ19" target="_blank" rel="noopener noreferrer">
+        Kindle『39歳、年収800万円アップの転職術』
+      </a>
+    </p>
+  </div>
+</aside>
+
+<style>
+  .author-bio {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.4rem;
+    align-items: start;
+    margin-block: 3em;
+    padding: 1.6em 1.6em 1.4em;
+    background-color: var(--color-bone);
+    border-top: 1px solid var(--color-gold);
+  }
+
+  .author-avatar {
+    flex-shrink: 0;
+  }
+
+  .author-eyebrow {
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+    margin: 0 0 0.4em 0;
+    font-weight: 600;
+  }
+
+  .author-name {
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0 0 0.6em 0;
+    color: var(--color-onyx);
+  }
+
+  .author-bio-text {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--color-text);
+    margin: 0 0 0.8em 0;
+  }
+
+  .author-links {
+    margin: 0.6em 0 0 0;
+    font-size: 0.85rem;
+  }
+</style>

@@ -1,0 +1,97 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { SITE } from '~/config';
+---
+
+<BaseLayout title="サイトについて" description={`${SITE.name}の運営理念とコンテンツ方針`}>
+  <article class="page">
+    <header class="page-header">
+      <p class="eyebrow">About</p>
+      <h1>サイトについて</h1>
+    </header>
+
+    <div class="page-body">
+      <h2>サイトコンセプト</h2>
+      <p>
+        <strong>「{SITE.tagline}」</strong>
+      </p>
+      <p>
+        {SITE.name} は、現役コンサルが PowerPoint・Excel・Word の資料作成術を網羅したサイトです。
+        既存の Office Tips サイトの「操作の網羅」と、コンサル書籍の「設計思想の深さ」を Web 上で両立させ、
+        ロングテール KW で SEO を取りに行く独自ポジショニングを目指しています。
+      </p>
+
+      <h2>運営者</h2>
+      <p>
+        <strong>{SITE.author}</strong> — {SITE.authorBio}
+      </p>
+
+      <h2>サイトの 3 つの約束</h2>
+      <ol>
+        <li>
+          <strong>網羅性：</strong>PPT・Excel・Word のあらゆる "使いどころ" を
+          360 本超でカバーします。
+        </li>
+        <li>
+          <strong>コンサル品質：</strong>全記事の末尾に
+          <code>ConsultantTip</code> 枠を設け、「現場ではこう作る」という実戦 Tips を埋め込みます。
+        </li>
+        <li>
+          <strong>即実戦：</strong>スクショ・図解・テンプレを添えて、
+          読了後すぐに自分の資料に応用できる形で書きます。
+        </li>
+      </ol>
+
+      <h2>コンテンツの一次ソース</h2>
+      <p>
+        本サイトのすべての記事は、以下の <strong>公開済みの一次情報</strong> を元に執筆しています：
+      </p>
+      <ul>
+        <li>Microsoft 公式ドキュメント（support.microsoft.com / learn.microsoft.com）</li>
+        <li>コンサル書籍（前田鎌利・山口拓朗・グロービス・マッキンゼー流系）</li>
+        <li>Excel 専門書籍（吉田拳・村井直志・森田貢士 ほか）</li>
+        <li>既存メディア（できるネット・ITmedia ほか）からのクロスチェック</li>
+      </ul>
+
+      <h2>コンプライアンス</h2>
+      <p>
+        運営者の所属企業名・案件・顧客名・社内資料の構成パクリは
+        <strong>一切行いません</strong>。記事内では「現役コンサル」表記までに留め、
+        具体企業名は伏せます。これは法務リスクの回避だけでなく、業務で得た情報を
+        副業に流用しないための自主規制です。
+      </p>
+
+      <h2>ペンネーム</h2>
+      <p>
+        本サイトおよび Kindle 出版・他の運営サイトでは、
+        ペンネーム <strong>「{SITE.author}」</strong> を統一して使用しています。
+      </p>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .page {
+    max-width: var(--container-content);
+    margin: 0 auto;
+    padding: 4rem 1.25rem 6rem;
+  }
+
+  .page-header {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--color-mist);
+  }
+
+  .page-header h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 1.5rem + 1.5vw, 2.75rem);
+    margin: 0 !important;
+    border: none !important;
+    padding: 0 !important;
+  }
+
+  .page-header h1::before {
+    display: none !important;
+  }
+</style>

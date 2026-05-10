@@ -1,0 +1,89 @@
+---
+export interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+export interface Props {
+  headings: Heading[];
+}
+
+const { headings } = Astro.props;
+const filtered = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+---
+
+{filtered.length > 0 && (
+  <aside class="toc" aria-labelledby="toc-heading">
+    <p id="toc-heading" class="toc-eyebrow">Contents</p>
+    <ol>
+      {filtered.map((h) => (
+        <li class={`toc-depth-${h.depth}`}>
+          <a href={`#${h.slug}`}>{h.text}</a>
+        </li>
+      ))}
+    </ol>
+  </aside>
+)}
+
+<style>
+  .toc {
+    background-color: var(--color-bone);
+    border-left: 2px solid var(--color-gold);
+    padding: 1.2em 1.4em;
+    font-size: 0.875rem;
+  }
+
+  .toc-eyebrow {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+    margin: 0 0 0.7em 0;
+  }
+
+  .toc ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: toc;
+  }
+
+  .toc li {
+    margin-block: 0.4em;
+    line-height: 1.5;
+    counter-increment: toc;
+  }
+
+  .toc-depth-2 {
+    padding-left: 0;
+  }
+
+  .toc-depth-2::before {
+    content: counter(toc, decimal-leading-zero);
+    font-family: var(--font-display);
+    color: var(--color-gold);
+    font-weight: 600;
+    margin-right: 0.5em;
+    font-size: 0.85em;
+  }
+
+  .toc-depth-3 {
+    padding-left: 1.6em;
+    font-size: 0.95em;
+    color: var(--color-text-muted);
+  }
+
+  .toc a {
+    color: var(--color-onyx);
+    text-decoration: none;
+  }
+
+  .toc a:hover {
+    color: var(--color-gold-deep);
+    text-decoration: underline;
+    text-decoration-color: var(--color-gold);
+  }
+</style>

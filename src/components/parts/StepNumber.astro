@@ -1,0 +1,85 @@
+---
+/**
+ * StepNumber — 手順の各ステップを大きな数字付きで表示
+ */
+export interface Props {
+  number: string | number;
+  title: string;
+}
+
+const { number, title } = Astro.props;
+---
+
+<section class="step-number">
+  <div class="step-marker">
+    <span class="step-eyebrow">STEP</span>
+    <span class="step-num">{String(number).padStart(2, '0')}</span>
+  </div>
+  <div class="step-content">
+    <h3 class="step-title">{title}</h3>
+    <div class="step-body">
+      <slot />
+    </div>
+  </div>
+</section>
+
+<style>
+  .step-number {
+    display: grid;
+    grid-template-columns: 4.5rem 1fr;
+    gap: 1.4rem;
+    margin-block: 2.2em;
+    padding-bottom: 1.6em;
+    border-bottom: 1px solid var(--color-mist);
+  }
+
+  .step-number:last-child {
+    border-bottom: none;
+  }
+
+  .step-marker {
+    text-align: center;
+  }
+
+  .step-eyebrow {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 0.65rem;
+    letter-spacing: 0.16em;
+    color: var(--color-gold);
+    font-weight: 600;
+    margin-bottom: 0.2em;
+  }
+
+  .step-num {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--color-onyx);
+    letter-spacing: -0.02em;
+  }
+
+  .step-title {
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0 0 0.6em 0 !important;
+    border: none !important;
+    padding: 0 !important;
+    color: var(--color-onyx);
+  }
+
+  .step-title::before {
+    display: none !important;
+  }
+
+  .step-body :global(p) {
+    margin-block: 0.6em;
+  }
+
+  .step-body :global(p:first-child) {
+    margin-top: 0;
+  }
+</style>

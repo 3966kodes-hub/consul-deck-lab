@@ -1,0 +1,105 @@
+---
+/**
+ * RuleBox — 「○○ の鉄則」「NG パターン」ルールボックス
+ */
+export type RuleType = 'rule' | 'ng' | 'principle';
+
+export interface Props {
+  type?: RuleType;
+  title?: string;
+}
+
+const { type = 'rule', title } = Astro.props;
+
+const LABEL: Record<RuleType, string> = {
+  rule: '鉄則',
+  ng: 'NG パターン',
+  principle: '原則',
+};
+---
+
+<aside class={`rule-box rule-${type}`}>
+  <div class="rule-header">
+    <span class="rule-label">{LABEL[type]}</span>
+    {title && <p class="rule-title">{title}</p>}
+  </div>
+  <div class="rule-body">
+    <slot />
+  </div>
+</aside>
+
+<style>
+  .rule-box {
+    margin-block: 2em;
+    padding: 1.4em 1.5em;
+    border: 2px solid var(--color-onyx);
+    background-color: var(--color-offwhite);
+    position: relative;
+  }
+
+  .rule-ng {
+    border-color: var(--color-brick);
+  }
+
+  .rule-principle {
+    border-color: var(--color-gold);
+  }
+
+  .rule-header {
+    display: flex;
+    align-items: center;
+    gap: 0.8em;
+    margin-bottom: 0.7em;
+    padding-bottom: 0.7em;
+    border-bottom: 1px dashed var(--color-mist);
+  }
+
+  .rule-label {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 0.3em 0.8em;
+    background-color: var(--color-onyx);
+    color: var(--color-offwhite);
+    line-height: 1.2;
+    flex-shrink: 0;
+  }
+
+  .rule-ng .rule-label {
+    background-color: var(--color-brick);
+  }
+
+  .rule-principle .rule-label {
+    background-color: var(--color-gold);
+    color: var(--color-onyx);
+  }
+
+  .rule-title {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: 1.05rem;
+    margin: 0;
+    color: var(--color-onyx);
+  }
+
+  .rule-body :global(p) {
+    margin-block: 0.5em;
+    font-size: 0.95em;
+  }
+
+  .rule-body :global(p:first-child) {
+    margin-top: 0;
+  }
+
+  .rule-body :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .rule-body :global(ul),
+  .rule-body :global(ol) {
+    margin-block: 0.8em;
+  }
+</style>

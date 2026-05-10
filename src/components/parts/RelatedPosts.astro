@@ -1,0 +1,129 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { CATEGORIES } from '~/config';
+
+export interface Props {
+  posts: CollectionEntry<'posts'>[];
+}
+
+const { posts } = Astro.props;
+---
+
+{posts.length > 0 && (
+  <section class="related-posts" aria-labelledby="related-heading">
+    <header class="related-header">
+      <p class="related-eyebrow">Read Next</p>
+      <h2 id="related-heading">関連する記事</h2>
+    </header>
+    <ul class="related-list">
+      {posts.map((post) => {
+        const cat = CATEGORIES.find((c) => c.slug === post.data.category);
+        return (
+          <li>
+            <a href={`/posts/${post.id}/`} class="related-card">
+              {cat && <p class="related-category">{cat.shortLabel}</p>}
+              <p class="related-title">{post.data.title}</p>
+              <p class="related-arrow" aria-hidden="true">→</p>
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+  </section>
+)}
+
+<style>
+  .related-posts {
+    margin-block: 4em 2em;
+    padding-top: 2em;
+    border-top: 1px solid var(--color-mist);
+  }
+
+  .related-header {
+    margin-bottom: 1.6em;
+  }
+
+  .related-eyebrow {
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+    margin: 0 0 0.3em 0;
+    font-weight: 600;
+  }
+
+  .related-header h2 {
+    font-family: var(--font-serif);
+    font-size: 1.4rem;
+    margin: 0 !important;
+    border: none !important;
+    padding: 0 !important;
+    color: var(--color-onyx);
+  }
+
+  .related-header h2::before {
+    display: none !important;
+  }
+
+  .related-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .related-list {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .related-card {
+    display: block;
+    padding: 1.2em 1.2em 1.4em;
+    border: 1px solid var(--color-mist);
+    background-color: var(--color-offwhite);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+    height: 100%;
+    position: relative;
+  }
+
+  .related-card:hover {
+    border-color: var(--color-gold);
+    text-decoration: none;
+  }
+
+  .related-category {
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    color: var(--color-gold);
+    text-transform: uppercase;
+    font-weight: 600;
+    margin: 0 0 0.6em 0;
+  }
+
+  .related-title {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--color-onyx);
+    margin: 0;
+  }
+
+  .related-arrow {
+    text-align: right;
+    color: var(--color-gold);
+    font-size: 1.2em;
+    margin: 0.6em 0 0 0;
+    transition: transform 0.2s ease;
+  }
+
+  .related-card:hover .related-arrow {
+    transform: translateX(4px);
+  }
+</style>

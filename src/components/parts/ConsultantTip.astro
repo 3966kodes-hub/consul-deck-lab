@@ -1,0 +1,78 @@
+---
+/**
+ * ConsultantTip — 「💡 コンサル現場ではこう作る」
+ * 全記事の末尾に最低 1 つ配置する、本サイトの差別化コアコンポーネント。
+ */
+export interface Props {
+  title?: string;
+}
+
+const { title = 'コンサル現場ではこう作る' } = Astro.props;
+---
+
+<aside class="consultant-tip">
+  <div class="tip-header">
+    <span class="tip-icon" aria-hidden="true">💡</span>
+    <p class="tip-title">{title}</p>
+  </div>
+  <div class="tip-body">
+    <slot />
+  </div>
+</aside>
+
+<style>
+  .consultant-tip {
+    margin-block: 2.4em;
+    padding: 1.6em 1.6em 1.4em 1.4em;
+    background-color: var(--color-bone);
+    border-left: 3px solid var(--color-gold);
+    position: relative;
+  }
+
+  .consultant-tip::before {
+    content: "";
+    position: absolute;
+    top: 0.7em;
+    right: 0.9em;
+    font-family: var(--font-display);
+    font-size: 1.6em;
+    color: var(--color-gold);
+    opacity: 0.4;
+    line-height: 1;
+  }
+
+  .tip-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    margin-bottom: 0.6em;
+  }
+
+  .tip-icon {
+    font-size: 1.15em;
+    line-height: 1;
+  }
+
+  .tip-title {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    color: var(--color-onyx);
+    margin: 0;
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+  }
+
+  .tip-body :global(p) {
+    margin-block: 0.6em;
+    font-size: 0.95em;
+    line-height: 1.85;
+  }
+
+  .tip-body :global(p:first-child) {
+    margin-top: 0;
+  }
+
+  .tip-body :global(p:last-child) {
+    margin-bottom: 0;
+  }
+</style>

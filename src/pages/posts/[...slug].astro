@@ -1,0 +1,334 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import TableOfContents from '~/components/parts/TableOfContents.astro';
+import RelatedPosts from '~/components/parts/RelatedPosts.astro';
+import AuthorBio from '~/components/parts/AuthorBio.astro';
+import { CATEGORIES } from '~/config';
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+interface Props {
+  post: CollectionEntry<'posts'>;
+}
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+
+const category = CATEGORIES.find((c) => c.slug === post.data.category);
+
+// Find related posts (same category, exclude self)
+const allPosts = await getCollection('posts', ({ data }) => !data.draft);
+const related = allPosts
+  .filter((p) => p.data.category === post.data.category && p.id !== post.id)
+  .sort(() => Math.random() - 0.5)
+  .slice(0, 3);
+
+const wordCount = post.body?.length ?? 0;
+const readMin = Math.max(1, Math.ceil(wordCount / 600));
+---
+
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  type="article"
+  publishedAt={post.data.publishedAt}
+  updatedAt={post.data.updatedAt}
+>
+  <article class="article">
+    <!-- Article Header -->
+    <header class="article-header">
+      <div class="header-inner">
+        <nav class="breadcrumb" aria-label="パンくずリスト">
+          <a href="/">トップ</a>
+          <span class="sep">/</span>
+          {category && (
+            <>
+              <a href={`/category/${category.slug}/`}>{category.shortLabel}</a>
+              <span class="sep">/</span>
+            </>
+          )}
+          <span class="current">記事</span>
+        </nav>
+
+        {category && (
+          <p class="article-category">
+            <span class="cat-number">{category.number}</span>
+            <span class="cat-label">{category.label}</span>
+          </p>
+        )}
+
+        <h1 class="article-title">{post.data.title}</h1>
+
+        <p class="article-description">{post.data.description}</p>
+
+        <div class="article-meta">
+          <time datetime={post.data.publishedAt.toISOString()}>
+            {post.data.publishedAt.toLocaleDateString('ja-JP', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })}
+            <span class="meta-label">公開</span>
+          </time>
+          {post.data.updatedAt && (
+            <time datetime={post.data.updatedAt.toISOString()}>
+              {post.data.updatedAt.toLocaleDateString('ja-JP', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+              <span class="meta-label">更新</span>
+            </time>
+          )}
+          <span class="read-time">読了 {readMin} 分</span>
+          {post.data.isPillar && <span class="pillar-mark">PILLAR {post.data.pillarNumber ?? ''}</span>}
+        </div>
+      </div>
+    </header>
+
+    <!-- Article Body Layout -->
+    <div class="article-layout">
+      <div class="article-body">
+        <Content />
+      </div>
+
+      <aside class="article-sidebar">
+        <div class="sidebar-sticky">
+          <TableOfContents headings={headings} />
+        </div>
+      </aside>
+    </div>
+
+    <!-- Tags -->
+    {post.data.tags.length > 0 && (
+      <div class="tag-section">
+        <p class="eyebrow">Tags</p>
+        <ul class="tag-list">
+          {post.data.tags.map((tag) => (
+            <li><span class="tag">#{tag}</span></li>
+          ))}
+        </ul>
+      </div>
+    )}
+
+    <!-- Author Bio -->
+    <div class="article-narrow">
+      <AuthorBio />
+    </div>
+
+    <!-- Related Posts -->
+    {related.length > 0 && (
+      <div class="article-narrow">
+        <RelatedPosts posts={related} />
+      </div>
+    )}
+  </article>
+</BaseLayout>
+
+<style>
+  .article {
+    background-color: var(--color-offwhite);
+  }
+
+  .article-header {
+    background-color: var(--color-onyx);
+    color: var(--color-offwhite);
+    padding: 4rem 1.25rem 4.5rem;
+  }
+
+  .header-inner {
+    max-width: var(--container-wide);
+    margin: 0 auto;
+  }
+
+  .breadcrumb {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: rgba(250, 250, 247, 0.5);
+    margin-bottom: 1.5em;
+  }
+
+  .breadcrumb a {
+    color: rgba(250, 250, 247, 0.7);
+    text-decoration: none;
+  }
+
+  .breadcrumb a:hover {
+    color: var(--color-gold);
+  }
+
+  .breadcrumb .sep {
+    margin: 0 0.6em;
+  }
+
+  .breadcrumb .current {
+    color: var(--color-gold);
+  }
+
+  .article-category {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    margin: 0 0 1.4em 0;
+  }
+
+  .cat-number {
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    letter-spacing: 0.18em;
+    color: var(--color-gold);
+    font-weight: 600;
+  }
+
+  .cat-label {
+    font-family: var(--font-serif);
+    font-size: 0.85rem;
+    color: rgba(250, 250, 247, 0.85);
+  }
+
+  .article-title {
+    font-family: var(--font-serif);
+    font-size: clamp(1.75rem, 1.4rem + 1.6vw, 2.75rem);
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    color: var(--color-offwhite);
+    margin: 0 0 0.7em 0 !important;
+    border: none !important;
+    padding: 0 !important;
+  }
+
+  .article-title::before {
+    display: none !important;
+  }
+
+  .article-description {
+    font-size: 1rem;
+    line-height: 1.85;
+    color: rgba(250, 250, 247, 0.8);
+    margin: 0 0 1.8em 0;
+    max-width: 36em;
+  }
+
+  .article-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1em 1.4em;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: rgba(250, 250, 247, 0.6);
+    padding-top: 1.4em;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .article-meta time {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+  }
+
+  .meta-label {
+    font-family: var(--font-display);
+    font-size: 0.65rem;
+    letter-spacing: 0.16em;
+    color: var(--color-gold);
+    text-transform: uppercase;
+  }
+
+  .pillar-mark {
+    font-family: var(--font-display);
+    font-size: 0.65rem;
+    letter-spacing: 0.16em;
+    background-color: var(--color-gold);
+    color: var(--color-onyx);
+    padding: 0.25em 0.7em;
+    font-weight: 700;
+  }
+
+  /* ===== Layout ===== */
+  .article-layout {
+    max-width: var(--container-grid);
+    margin: 0 auto;
+    padding: 4rem 1.25rem 2rem;
+    display: grid;
+    gap: 3rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 1024px) {
+    .article-layout {
+      grid-template-columns: minmax(0, var(--container-content)) 1fr;
+      align-items: start;
+    }
+  }
+
+  .article-body {
+    max-width: var(--container-content);
+    margin: 0 auto;
+    width: 100%;
+    font-size: 1rem;
+    line-height: 1.85;
+  }
+
+  .article-body :global(img) {
+    margin-block: 1.6em;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .article-sidebar {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .article-sidebar {
+      display: block;
+    }
+  }
+
+  .sidebar-sticky {
+    position: sticky;
+    top: 6rem;
+  }
+
+  /* ===== Tags ===== */
+  .article-narrow {
+    max-width: var(--container-content);
+    margin: 0 auto;
+    padding: 0 1.25rem;
+  }
+
+  .tag-section {
+    max-width: var(--container-content);
+    margin: 3em auto 2em;
+    padding: 0 1.25rem;
+  }
+
+  .tag-list {
+    list-style: none;
+    padding: 0;
+    margin: 0.6em 0 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6em;
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 0.8rem;
+    color: var(--color-navy);
+    background-color: var(--color-bone);
+    padding: 0.3em 0.7em;
+    border: 1px solid var(--color-mist);
+    border-radius: 2px;
+    font-family: var(--font-mono);
+  }
+</style>

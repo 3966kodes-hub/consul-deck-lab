@@ -1,0 +1,40 @@
+---
+title: "Excel で事業計画モデルを作る完全ガイド｜3 期分の P/L・CF を 1 シートで仕上げる"
+description: "コンサルの基本スキルである事業計画モデリングを Excel で完全再現。前提条件→売上→コスト→利益→CF の流れをセル単位で解説。"
+publishedAt: 2026-05-13
+category: excel-modeling
+tags:
+  - 事業計画
+  - Excelモデリング
+  - P/L
+  - CF
+  - コンサル
+isPillar: true
+pillarNumber: "04"
+audience: intermediate
+---
+import ConsultantTip from '~/components/parts/ConsultantTip.astro';
+import Callout from '~/components/ui/Callout.astro';
+
+コンサルの基本スキルである **事業計画モデリング** を Excel で完全再現するガイドです。
+
+<Callout type="note" title="本記事は柱記事のスタブです">
+本記事は順次拡充予定です。先に [PPT 構成 5 パターン](/posts/pillar-001-ppt-structure-5-patterns/) をご覧ください。
+</Callout>
+
+## 1 シート完結の事業計画モデル構造
+
+| ブロック | 行範囲（目安）| 内容 |
+|---|---|---|
+| **A. 前提条件** | 1〜10 行 | 顧客数・単価・成長率・税率 など入力欄 |
+| **B. 売上計算** | 12〜20 行 | 顧客数 × 単価 × 季節性 |
+| **C. コスト計算** | 22〜35 行 | 変動費・固定費・人件費 |
+| **D. 損益（P/L）** | 37〜50 行 | 売上 - コスト = 利益 |
+| **E. キャッシュフロー** | 52〜65 行 | 営業 CF・投資 CF・財務 CF |
+| **F. KPI 集計** | 67〜80 行 | 月次 KPI ダッシュボード |
+
+<ConsultantTip>
+事業計画モデルで最も重要なのは **「前提条件（A ブロック）を 1 箇所に集約する」** こと。後で前提が変わったとき、A ブロックの 1 セルを変えるだけでモデル全体が連動して再計算される設計が、コンサル品質の最低ラインです。逆に、前提値が複数のセルに散らばっていると、修正漏れが発生して大事故につながります。
+</ConsultantTip>
+
+詳細解説は順次追加予定です。

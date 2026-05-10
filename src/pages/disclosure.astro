@@ -1,0 +1,71 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="PR 表記" description="アフィリエイトリンクの取り扱いに関する開示">
+  <article class="page">
+    <header class="page-header">
+      <p class="eyebrow">Disclosure</p>
+      <h1>PR 表記</h1>
+    </header>
+
+    <div class="page-body">
+      <h2>アフィリエイトリンクの取り扱い</h2>
+      <p>
+        本サイトには、Amazon アソシエイト・楽天アフィリエイト・A8.net・もしもアフィリエイト・
+        その他のアフィリエイトプログラムによる広告（アフィリエイトリンク）が含まれています。
+      </p>
+      <p>
+        本サイト経由で読者が商品・サービスを購入された場合、運営者に紹介料が支払われることがあります。
+        ただし、この紹介料の有無が記事内容に影響することはありません。
+        書籍・ツール・転職エージェントの推奨は、運営者自身が
+        <strong>「実務で価値があると判断したもの」のみ</strong>を記載しています。
+      </p>
+
+      <h2>消費者庁ステマ規制への対応</h2>
+      <p>
+        2026 年現在、本サイトは消費者庁の「ステマ規制（景品表示法）」に準拠しており、
+        アフィリエイトリンクには <code>PR</code> 表記を必ず付けています。
+      </p>
+
+      <h2>Amazon アソシエイト・プログラム</h2>
+      <p>
+        本サイトは Amazon.co.jp のアソシエイト・プログラムに参加しています。
+        Amazon、Amazon.co.jp およびそれらのロゴは Amazon.com, Inc. またはその関連会社の商標です。
+      </p>
+
+      <h2>商標・著作権について</h2>
+      <ul>
+        <li>Microsoft、Office、PowerPoint、Excel、Word、Copilot は Microsoft Corporation の商標です。</li>
+        <li>think-cell は think-cell Software GmbH の商標です。</li>
+        <li>その他、本サイトに登場する企業名・商品名は各社の商標または登録商標です。</li>
+      </ul>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .page {
+    max-width: var(--container-content);
+    margin: 0 auto;
+    padding: 4rem 1.25rem 6rem;
+  }
+
+  .page-header {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--color-mist);
+  }
+
+  .page-header h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 1.5rem + 1.5vw, 2.75rem);
+    margin: 0 !important;
+    border: none !important;
+    padding: 0 !important;
+  }
+
+  .page-header h1::before {
+    display: none !important;
+  }
+</style>
