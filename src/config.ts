@@ -10,7 +10,7 @@ export const SITE = {
   description: '現役コンサルが PPT・Excel・Word の資料作成術を網羅。提案書・ステコミ・ピッチデッキの作り方から Excel 事業計画モデル、AI 活用まで。',
   url: 'https://consul-deck-lab.com',
   author: 'とっても！ハッピーマン',
-  authorBio: '現役コンサル（具体企業名は伏せる）。S&C 領域のマネージャーとして、戦略立案・業務改革・IT 戦略の提案書を年間 100 本以上作成。Kindle『39歳、年収800万円アップの転職術』著者。',
+  authorBio: '現役コンサル（具体企業名は伏せる）。提案書・ステコミ・経営会議資料を年間 100 本以上作成。Kindle『39歳、年収800万円アップの転職術』著者。',
   ogImage: '/images/ogp-default.png',
   locale: 'ja-JP',
   startYear: 2026,
